@@ -8,6 +8,7 @@ public class video {
     static VideoView[] v=new VideoView[1];
     static boolean isRunning=false;
     static int level=1;
+    static int gameMode=0; //0 -> regular mode , 1 -> random mode
 
 
 }
