@@ -2,7 +2,7 @@
 
 Software Engineering B.Sc. graduation project, the Subitizing game.
 
-![project logo (this one for is taken from basecamp - a project management service)]https://www.flaticon.com/free-icon/sushi_1461505)
+![project logo](this one for is taken from basecamp - a project management service)]https://www.flaticon.com/free-icon/sushi_1461505)
 
 This game is created for kids who have problem with identifying small objects number, this skill called subitizing and who has a problem with this skill will be having a future mathmatic problems. 
 the target of the game is to improve the ability of subitizing.
