@@ -1,29 +1,58 @@
 package com.example.moodisalman.subitizing;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.VideoView;
+import com.felipecsl.gifimageview.library.GifImageView;
+import org.apache.commons.io.IOUtils;
+import java.io.IOException;
+import java.io.InputStream;
+
+
+/**
+ * so how the game works?
+ * the game has 6 levels, each objNum has four num of objects, so let's say objNum 1 -> it has from 1 to 4
+ * and objNum 2 -> from 2 to 5, so basically from the objNum num to objNum num+3 ,
+ * in each objNum the player must success in 16 repeats if not then the repeats will increase automatically,
+ * also in each objNum the time will decrease with each success or increase with each lose , and will return to what it
+ * was in the next objNum.
+ */
 
 public class GameScreen extends AppCompatActivity {
     private GameView game;
     private VideoView videoView;
     private Uri ur;
-    private int curLevel,numOfWin=0,numOfLose=0 ,tmpLevel,millesecDiffrence=0;
+    private Button btn1,btn2,btn3,btn4;
+    private GifImageView gif;
+    private  Dialog dialog;
+    private MediaPlayer rightSound , wrongSound;
+    /**
+     * tmpLevel=also saves the current gameData.objNum temprarly (objNum=how many objects, used in dialog)
+     * curLevWin=saves num of wins in the current objNum
+     */
+    private int tmpLevel,millesecDiffrence=0, curLevWin=0;
     private final int DISAPPEAR_OBJECTS=-1 ;
+    private final int THIRTY_MILLISEC=30;
+    private final int REGULAR_MODE=0,RANDOM_MODE=1;
+    public static int numOfWin,numOfLose;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,150 +71,14 @@ public class GameScreen extends AppCompatActivity {
         /** **/
 
 
-        /** for the background video and playing the game**/
-        video.level=0;
-        ur= Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.underwater1);
-        videoView.setVideoURI(ur);
-        videoView.start();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setLooping(true);
-                video.level=1;
-                gameProcess();
-            }
-        });
-        /** **/
+        numOfWin=0;
+        numOfLose=0;
+        gameData.outLevel=1;
+        gameData.objNum =0;
+        gameData.repeats=0;
+        gameData.gameMode=REGULAR_MODE;
+        gameProcess();
 
-
-
-    }
-    public void showAlertDialogButtonClicked(View view) {
-
-        LayoutInflater inflater=this.getLayoutInflater();
-        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view1 =inflater.inflate(R.layout.activity_answers,null);
-        builder.setView(view1).setTitle("תשובות");
-
-//        print("dialog level= "+video.level);
-        /** to put answers in the buttons **/
-        String[] tmpAns=new String[4];
-        if (tmpLevel==1){
-            for (int i=0;i<tmpAns.length;i++)
-                tmpAns[i]=i+1+"";
-        }
-        else if(tmpLevel>=2 && tmpLevel<=5){
-            for (int i=0;i<tmpAns.length;i++)
-                tmpAns[i]=i+2+"";
-        }
-        else {
-            for (int i=0;i<tmpAns.length;i++)
-                tmpAns[i]=i+6+"";
-        }
-
-        // add a list
-        builder.setItems(tmpAns, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                if (tmpLevel==1)
-                    which++;
-                 else if (tmpLevel<=5)
-                     which+=2;
-                 else
-                     which+=6;
-
-
-                switch (which) {
-                    case 1:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 2:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 3:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 4:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 5:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 6:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 7:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 8:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                    case 9:
-                        if (which==tmpLevel)
-                            incaseOfWin();
-
-                        else
-                            incaseOfLose();
-
-                        break;
-                }
-                video.level=curLevel;
-                if (numOfWin==3){
-                    video.level++;
-                    numOfWin=0;
-                    if (video.level==10){
-                        video.level=1;
-                    }////end of the nine levels .
-                }
-
-                gameProcess();
-
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
 
@@ -194,58 +87,318 @@ public class GameScreen extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    private void timer(){//delayed time until showing the the dailog
+    private void timer(){//delayed time until showing the the dialog
 
         final Handler handler = new Handler();
         final int delay = 1500; //milliseconds
         handler.postDelayed(new Runnable(){
             public void run(){
-                //do something
-                video.level=DISAPPEAR_OBJECTS;
-                showAlertDialogButtonClicked(game);
+                //do exampleing
+                gameData.objNum =DISAPPEAR_OBJECTS;
+                AnswersCustomAlertDialog();
             }
         }, delay-millesecDiffrence);
 
     }
 
     public void gameProcess(){//game rules
-        if (video.level==1){
-            tmpLevel=video.level;
-            curLevel= video.level;
-            timer();
-        }
-        else{
-            if (numOfWin==0){
-                curLevel=video.level;
-                tmpLevel=video.level;
-                timer();
+
+            if (gameData.repeats==0){//means at the first of the objNum to show the new add
+                if (gameData.outLevel!=1){
+                    for (int i=0;i<9;i++)
+                        gameData.howManyApprnce[i]=0;
+                }
+                if (gameData.outLevel==1)
+                    gameData.objNum = gameData.outLevel;
+                else
+                 gameData.objNum = gameData.outLevel+3;
             }
             else{
-                curLevel=video.level;//to choose a level randomly and save main level in tmplevel
-                int rnd=(int)(Math.random()*video.level)+1;
-//                print("rnd= "+rnd);
-                video.level=rnd;
-                tmpLevel=rnd;
-                timer();
-            }
+                while(true){
+                    gameData.objNum =(int)(Math.random()*((gameData.outLevel+3)- gameData.outLevel+1))+ gameData.outLevel;
+                    if (gameData.gameMode==REGULAR_MODE){
+                      if (gameData.howManyApprnce[gameData.objNum-1]<2)
+                           break;
+                    }
+                    else{
+                        if (gameData.howManyApprnce[gameData.objNum-1]<4)
+                            break;
 
-        }
+                    }
+
+                }
+
+            }
+            tmpLevel= gameData.objNum;
+
+            if (curLevWin>=8 && gameData.outLevel<=3)
+                initArraysRandomly();
+
+
+            gameData.repeats++;
+            timer();
     }
 
-    private void incaseOfLose(){
+    private void incaseOfLose(){// what to do incase of lose.
+        wrongSound.start();
         numOfLose++;
+        gameData.repeats++;
         if (numOfLose%2==0)
-            millesecDiffrence-=30;
+            millesecDiffrence-=THIRTY_MILLISEC;
         if (numOfLose%5==0){
             print("\uD83D\uDE14");
         }
+
+        gameProcess();
     }
 
-    private void incaseOfWin(){
-        print("יפה מאוד! \uD83C\uDF89\uD83D\uDE01\uD83C\uDF89");
+    private void incaseOfWin(){//what to do incase of win
+        rightSound.start();
+        gameData.repeats++;
         numOfWin++;
-        millesecDiffrence+=30;
+        curLevWin++;
+        gameData.howManyApprnce[tmpLevel-1]++;
+        if (curLevWin==8 && gameData.outLevel<=3)
+            gameData.gameMode=RANDOM_MODE;
+
+        if (gameData.repeats<=10)
+            millesecDiffrence+=THIRTY_MILLISEC;
+        else
+            millesecDiffrence=0;
+
+
+
+        if (numOfWin!=0 && numOfWin%16==0){
+            print("יפה מאוד! \uD83C\uDF89\uD83D\uDE01\uD83C\uDF89");
+            gameData.outLevel++;
+            gameData.repeats=0;
+            curLevWin=0;
+            gameData.gameMode=REGULAR_MODE;
+            if (gameData.outLevel>6){
+                gameData.outLevel=1;
+                print("You have finished all the levels");
+            }
+        }
+
+        positiveFeedback();
     }
 
+    private void initArraysRandomly(){//init the random x,y of the objects in random mode
+        gameData.xArr=new int[tmpLevel];
+        gameData.yArr=new int[tmpLevel];
+
+        int x,y;
+
+        for (int i=0;i<tmpLevel;i++){
+            x=(int)(Math.random()*5);
+            y=(int)(Math.random()*4)+1;
+
+            if (i==0){//means that there is no need to check if there are same coordinates in arrays
+                gameData.xArr[i]=x;
+                gameData.yArr[i]=y;
+            }
+            else{// to make sure that there is no same coordinates in the arrays
+
+                for (int j=0;j<i;j++){
+                 if (gameData.xArr[j]==x && gameData.yArr[j]==y){// if found
+                     i--;
+                     break;//return to the first loop and change x,y
+                 }
+                 if (j+1==i){//if not
+                     gameData.xArr[i]=x;
+                     gameData.yArr[i]=y;
+                 }
+
+                }
+            }
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /** Dialog **/
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_answers);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        /** **/
+
+        rightSound=MediaPlayer.create(this , R.raw.correct);
+        wrongSound=MediaPlayer.create(this , R.raw.no);
+
+/** for the background gameData and playing the game**/
+
+        ur= Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.underwater1);
+        videoView.setVideoURI(ur);
+        videoView.start();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+            }
+        });
+        /** **/
+
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    finish();
+                    dialog.dismiss();
+                }
+                return true;
+            }
+        });
+
+    }
+
+    public void AnswersCustomAlertDialog(){// the dialog of the answers.
+
+
+        btn1=dialog.findViewById(R.id.button);
+        btn2=dialog.findViewById(R.id.button2);
+        btn3=dialog.findViewById(R.id.button3);
+        btn4=dialog.findViewById(R.id.button4);
+
+        dialog.setCancelable(false);
+
+
+
+        /** to put answers in the buttons **/
+        if (tmpLevel==1){
+            btn1.setText("1");
+            btn2.setText("2");
+            btn3.setText("3");
+            btn4.setText("4");
+        }
+        else if(tmpLevel>=2 && tmpLevel<=5){
+            btn1.setText("2");
+            btn2.setText("3");
+            btn3.setText("4");
+            btn4.setText("5");
+        }
+        else {
+            btn1.setText("6");
+            btn2.setText("7");
+            btn3.setText("8");
+            btn4.setText("9");
+        }
+        dialog.show();
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = Integer.parseInt(btn1.getText().toString());
+                dialogHelpMethod(dialog,i);
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = Integer.parseInt(btn2.getText().toString());
+                 dialogHelpMethod(dialog,i);
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = Integer.parseInt(btn3.getText().toString());
+                dialogHelpMethod(dialog,i);
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = Integer.parseInt(btn4.getText().toString());
+                dialogHelpMethod(dialog,i);
+            }
+        });
+
+    }
+
+
+    public void positiveFeedback(){//to show the positive feedback
+        final Dialog animtDialog = new Dialog(this);
+        animtDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        animtDialog.setContentView(R.layout.positivefb);
+        animtDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        gif=animtDialog.findViewById(R.id.gifView);
+
+
+        animtDialog.setCancelable(false);
+        animtDialog.show();
+
+        try {
+            InputStream inputStream=getAssets().open("feedbackgif.gif");
+            byte[] bytes= IOUtils.toByteArray(inputStream);
+            gif.setBytes(bytes);
+            gif.startAnimation();
+
+        }catch (IOException ex){
+            print("feedback gif error");
+        }
+
+        new Handler().postDelayed(new Runnable() {// wait 3 sec and then do inside of run() methods
+            @Override
+            public void run() {
+                animtDialog.dismiss();
+                gif.stopAnimation();
+                gameProcess();
+            }
+        },3000);
+
+
+    }
+
+    private void dialogHelpMethod(Dialog d, int i){//if pressed any button in the dialog
+        d.dismiss();
+
+        if (i==tmpLevel)
+            incaseOfWin();
+        else
+            incaseOfLose();
+    }
+
+
+
+
+    public void onBackPressed() {
+//        if(dialog.isShowing()){
+//            print("is showing");
+//            dialog.setCancelable(true);
+//            dialog.dismiss();
+////        }
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(R.string.app_name);
+//        builder.setIcon(R.mipmap.ic_launcher);
+//        builder.setMessage("If You Enjoy The App Please Rate us?")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        Intent play =
+//                                new Intent(Intent.ACTION_VIEW, Uri.parse(""));
+//                        startActivity(play);
+//                    }
+//                })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        finish();
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
+
+        Intent play =new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(play);
+
+
+    }
 
 }
