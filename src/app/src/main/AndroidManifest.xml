@@ -7,7 +7,7 @@
         android:icon="@drawable/sushicon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/sushicon"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity android:name=".GameScreen"
             android:screenOrientation="landscape"></activity>

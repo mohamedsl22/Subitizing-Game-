@@ -70,6 +70,16 @@ public class GameScreen extends AppCompatActivity {
         layout.addView(game, width - 1, height - 1);
         /** **/
 
+        /** Dialog **/
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_answers);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        /** **/
+
+        rightSound=MediaPlayer.create(this , R.raw.correct);
+        wrongSound=MediaPlayer.create(this , R.raw.no);
+
 
         numOfWin=0;
         numOfLose=0;
@@ -77,7 +87,7 @@ public class GameScreen extends AppCompatActivity {
         gameData.objNum =0;
         gameData.repeats=0;
         gameData.gameMode=REGULAR_MODE;
-        gameProcess();
+        gameData.howManyApprnce=new int[9];
 
     }
 
@@ -116,11 +126,11 @@ public class GameScreen extends AppCompatActivity {
             else{
                 while(true){
                     gameData.objNum =(int)(Math.random()*((gameData.outLevel+3)- gameData.outLevel+1))+ gameData.outLevel;
-                    if (gameData.gameMode==REGULAR_MODE){
+                    if (gameData.outLevel<4 && gameData.gameMode==REGULAR_MODE){//to ensure that objNum appear only twice in reg mode
                       if (gameData.howManyApprnce[gameData.objNum-1]<2)
                            break;
                     }
-                    else{
+                    else{//if randam mode, or reg mode above lev 3 (appears 4 times )
                         if (gameData.howManyApprnce[gameData.objNum-1]<4)
                             break;
 
@@ -218,15 +228,13 @@ public class GameScreen extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        /** Dialog **/
-        dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_answers);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        /** **/
 
-        rightSound=MediaPlayer.create(this , R.raw.correct);
-        wrongSound=MediaPlayer.create(this , R.raw.no);
+
+        if(dialog.isShowing()){
+            dialog.dismiss();
+        }
+
+
 
 /** for the background gameData and playing the game**/
 
@@ -248,12 +256,34 @@ public class GameScreen extends AppCompatActivity {
                                  KeyEvent event) {
                 // TODO Auto-generated method stub
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    finish();
+//                    finish();
                     dialog.dismiss();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GameScreen.this);
+                    builder.setTitle(R.string.app_name);
+                    builder.setIcon(R.mipmap.ic_launcher);
+                    builder.setMessage("בטוח שרוצה לצאת?")
+                            .setCancelable(false)
+                            .setPositiveButton("כן", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    Intent play =new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(play);
+                                }
+                            })
+                            .setNegativeButton("לא", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+//                                    finish();
+                                    gameProcess();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
                 return true;
             }
         });
+
+        gameProcess();
 
     }
 
@@ -351,7 +381,7 @@ public class GameScreen extends AppCompatActivity {
                 gif.stopAnimation();
                 gameProcess();
             }
-        },3000);
+        },2000);
 
 
     }
@@ -368,37 +398,34 @@ public class GameScreen extends AppCompatActivity {
 
 
 
-    public void onBackPressed() {
+//    public void onBackPressed() {
 //        if(dialog.isShowing()){
-//            print("is showing");
-//            dialog.setCancelable(true);
 //            dialog.dismiss();
-////        }
+//        }
+////
+////        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+////        builder.setTitle(R.string.app_name);
+////        builder.setIcon(R.mipmap.ic_launcher);
+////        builder.setMessage("בטוח שרוצה לצאת?")
+////                .setCancelable(false)
+////                .setPositiveButton("כן", new DialogInterface.OnClickListener() {
+////                    public void onClick(DialogInterface dialog, int id) {
+////
+////                                Intent play =new Intent(getApplicationContext(), MainActivity.class);
+////                        startActivity(play);
+////                    }
+////                })
+////                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+////                    public void onClick(DialogInterface dialog, int id) {
+////                        finish();
+////                    }
+////                });
+////        AlertDialog alert = builder.create();
+////        alert.show();
 //
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(R.string.app_name);
-//        builder.setIcon(R.mipmap.ic_launcher);
-//        builder.setMessage("If You Enjoy The App Please Rate us?")
-//                .setCancelable(false)
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        Intent play =
-//                                new Intent(Intent.ACTION_VIEW, Uri.parse(""));
-//                        startActivity(play);
-//                    }
-//                })
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        finish();
-//                    }
-//                });
-//        AlertDialog alert = builder.create();
-//        alert.show();
-
-        Intent play =new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(play);
-
-
-    }
+//
+//
+//
+//    }
 
 }

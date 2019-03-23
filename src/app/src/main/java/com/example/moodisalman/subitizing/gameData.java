@@ -8,12 +8,13 @@ public class gameData {
      * repeats=how many times did the outlevel occurred
      * gameMode= 0 -> regular mode , 1 -> random mode
      * xArr , yArr = saves random x,y for objects in random mode.
+     * howManyApprnce = to check how many appearance of each objNum.
      */
-    static int objNum =1;
-    static int outLevel=1;
-    static int repeats=0;
-    static int gameMode=0;
+    static int objNum ;
+    static int outLevel;
+    static int repeats;
+    static int gameMode;
     static int[] xArr ,yArr;
-    static  int[] howManyApprnce=new int[9];;
+    static  int[] howManyApprnce;
 
 }
