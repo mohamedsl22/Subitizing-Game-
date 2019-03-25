@@ -49,6 +49,7 @@ public class GameScreen extends AppCompatActivity {
     private final int DISAPPEAR_OBJECTS=-1 ;
     private final int THIRTY_MILLISEC=30;
     private final int REGULAR_MODE=0,RANDOM_MODE=1;
+    private final int NUM_OF_WANTED_WINS=44;
     public static int numOfWin,numOfLose;
 
 
@@ -78,12 +79,11 @@ public class GameScreen extends AppCompatActivity {
         /** **/
 
         rightSound=MediaPlayer.create(this , R.raw.correct);
-        wrongSound=MediaPlayer.create(this , R.raw.no);
+        wrongSound=MediaPlayer.create(this , R.raw.trya);
 
 
         numOfWin=0;
         numOfLose=0;
-        gameData.outLevel=1;
         gameData.objNum =0;
         gameData.repeats=0;
         gameData.gameMode=REGULAR_MODE;
@@ -127,11 +127,11 @@ public class GameScreen extends AppCompatActivity {
                 while(true){
                     gameData.objNum =(int)(Math.random()*((gameData.outLevel+3)- gameData.outLevel+1))+ gameData.outLevel;
                     if (gameData.outLevel<4 && gameData.gameMode==REGULAR_MODE){//to ensure that objNum appear only twice in reg mode
-                      if (gameData.howManyApprnce[gameData.objNum-1]<2)
+                      if (gameData.howManyApprnce[gameData.objNum-1]<11)
                            break;
                     }
                     else{//if randam mode, or reg mode above lev 3 (appears 4 times )
-                        if (gameData.howManyApprnce[gameData.objNum-1]<4)
+                        if (gameData.howManyApprnce[gameData.objNum-1]<22)
                             break;
 
                     }
@@ -141,7 +141,7 @@ public class GameScreen extends AppCompatActivity {
             }
             tmpLevel= gameData.objNum;
 
-            if (curLevWin>=8 && gameData.outLevel<=3)
+            if (curLevWin>=NUM_OF_WANTED_WINS && gameData.outLevel<=3)
                 initArraysRandomly();
 
 
@@ -151,15 +151,22 @@ public class GameScreen extends AppCompatActivity {
 
     private void incaseOfLose(){// what to do incase of lose.
         wrongSound.start();
+
         numOfLose++;
         gameData.repeats++;
-        if (numOfLose%2==0)
+        if (numOfLose%3==0)
             millesecDiffrence-=THIRTY_MILLISEC;
         if (numOfLose%5==0){
             print("\uD83D\uDE14");
         }
+        new Handler().postDelayed(new Runnable() {// wait 3 sec and then do inside of run() methods
+            @Override
+            public void run() {
+                gameProcess();
+            }
+        },900);
 
-        gameProcess();
+
     }
 
     private void incaseOfWin(){//what to do incase of win
@@ -168,20 +175,19 @@ public class GameScreen extends AppCompatActivity {
         numOfWin++;
         curLevWin++;
         gameData.howManyApprnce[tmpLevel-1]++;
-        if (curLevWin==8 && gameData.outLevel<=3)
+        if (curLevWin==NUM_OF_WANTED_WINS && gameData.outLevel<=3)
             gameData.gameMode=RANDOM_MODE;
 
-        if (gameData.repeats<=10)
+        if (curLevWin%5==0)
             millesecDiffrence+=THIRTY_MILLISEC;
-        else
-            millesecDiffrence=0;
 
 
 
-        if (numOfWin!=0 && numOfWin%16==0){
+        if (numOfWin!=0 && numOfWin%(NUM_OF_WANTED_WINS*2)==0){
             print("יפה מאוד! \uD83C\uDF89\uD83D\uDE01\uD83C\uDF89");
             gameData.outLevel++;
             gameData.repeats=0;
+            millesecDiffrence=0;
             curLevWin=0;
             gameData.gameMode=REGULAR_MODE;
             if (gameData.outLevel>6){

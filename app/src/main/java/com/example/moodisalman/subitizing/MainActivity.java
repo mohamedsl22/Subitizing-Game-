@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         plybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                i = new Intent(getApplicationContext(), GameScreen.class);
+                i = new Intent(MainActivity.this, Levels.class);
                 startActivity(i);
             }
         });

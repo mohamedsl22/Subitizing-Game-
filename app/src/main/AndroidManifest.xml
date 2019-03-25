@@ -9,8 +9,10 @@
         android:roundIcon="@drawable/sushicon"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".GameScreen"
-            android:screenOrientation="landscape"></activity>
+        <activity android:name=".Levels"></activity>
+        <activity
+            android:name=".GameScreen"
+            android:screenOrientation="landscape" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
