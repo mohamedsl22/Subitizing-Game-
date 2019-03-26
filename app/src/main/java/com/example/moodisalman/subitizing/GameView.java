@@ -16,6 +16,7 @@ public class GameView extends View  {
     private final int REGULAR_MODE=0,RANDOM_MODE=1;
     private Paint penInfo;
     private final int DISAPPEAR_OBJECTS=-1 ;
+    private String mode;
 
     public GameView(Context context) {//constructor
         super(context);
@@ -24,15 +25,12 @@ public class GameView extends View  {
 
         penInfo = new Paint(Paint.ANTI_ALIAS_FLAG);
         penInfo.setColor(Color.YELLOW);
-        penInfo.setTextSize(45);
+        penInfo.setTextSize(40);
 
 
     }
 
-    // states
-    private enum State {GET_READY, PLAYING, GAME_OVER};
 
-    // objects
 
     @Override
     protected void onDraw(Canvas canvas)
@@ -54,9 +52,15 @@ public class GameView extends View  {
 
         }
 
+        if (gameData.gameMode==REGULAR_MODE)
+            mode="G";
+        else
+            mode="R";
 
-        canvas.drawText("WINS: "+GameScreen.numOfWin+"  LOSE: "+GameScreen.numOfLose, 50, 70, penInfo);
-        canvas.drawText("LEVEL: "+ gameData.outLevel , canvas.getWidth()-200, 70, penInfo);
+
+
+        canvas.drawText("TIME: "+"("+(1500-gameData.millesecDiffrence)+")  MODE: ("+mode+")", 10, 40, penInfo);
+        canvas.drawText("LEVEL: "+ gameData.outLevel , canvas.getWidth()-180, 40, penInfo);
 
         // Animation loop (redraw this view by invalidate - call onDraw() - for animation loop
        invalidate();   // temporary method - will be replaced later by Animation Thread

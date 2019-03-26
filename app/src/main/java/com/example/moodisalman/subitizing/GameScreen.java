@@ -45,7 +45,7 @@ public class GameScreen extends AppCompatActivity {
      * tmpLevel=also saves the current gameData.objNum temprarly (objNum=how many objects, used in dialog)
      * curLevWin=saves num of wins in the current objNum
      */
-    private int tmpLevel,millesecDiffrence=0, curLevWin=0;
+    private int tmpLevel, curLevWin=0;
     private final int DISAPPEAR_OBJECTS=-1 ;
     private final int THIRTY_MILLISEC=30;
     private final int REGULAR_MODE=0,RANDOM_MODE=1;
@@ -86,7 +86,6 @@ public class GameScreen extends AppCompatActivity {
         numOfLose=0;
         gameData.objNum =0;
         gameData.repeats=0;
-        gameData.gameMode=REGULAR_MODE;
         gameData.howManyApprnce=new int[9];
 
     }
@@ -107,7 +106,7 @@ public class GameScreen extends AppCompatActivity {
                 gameData.objNum =DISAPPEAR_OBJECTS;
                 AnswersCustomAlertDialog();
             }
-        }, delay-millesecDiffrence);
+        }, delay-gameData.millesecDiffrence);
 
     }
 
@@ -141,8 +140,8 @@ public class GameScreen extends AppCompatActivity {
             }
             tmpLevel= gameData.objNum;
 
-            if (curLevWin>=NUM_OF_WANTED_WINS && gameData.outLevel<=3)
-                initArraysRandomly();
+                 if (gameData.gameMode==RANDOM_MODE)
+                    initArraysRandomly();
 
 
             gameData.repeats++;
@@ -155,7 +154,7 @@ public class GameScreen extends AppCompatActivity {
         numOfLose++;
         gameData.repeats++;
         if (numOfLose%3==0)
-            millesecDiffrence-=THIRTY_MILLISEC;
+            gameData.millesecDiffrence-=THIRTY_MILLISEC;
         if (numOfLose%5==0){
             print("\uD83D\uDE14");
         }
@@ -179,7 +178,7 @@ public class GameScreen extends AppCompatActivity {
             gameData.gameMode=RANDOM_MODE;
 
         if (curLevWin%5==0)
-            millesecDiffrence+=THIRTY_MILLISEC;
+            gameData.millesecDiffrence+=THIRTY_MILLISEC;
 
 
 
@@ -187,7 +186,7 @@ public class GameScreen extends AppCompatActivity {
             print("יפה מאוד! \uD83C\uDF89\uD83D\uDE01\uD83C\uDF89");
             gameData.outLevel++;
             gameData.repeats=0;
-            millesecDiffrence=0;
+            gameData.millesecDiffrence=0;
             curLevWin=0;
             gameData.gameMode=REGULAR_MODE;
             if (gameData.outLevel>6){
@@ -235,13 +234,9 @@ public class GameScreen extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-
         if(dialog.isShowing()){
             dialog.dismiss();
         }
-
-
-
 /** for the background gameData and playing the game**/
 
         ur= Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.underwater1);
@@ -262,7 +257,6 @@ public class GameScreen extends AppCompatActivity {
                                  KeyEvent event) {
                 // TODO Auto-generated method stub
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-//                    finish();
                     dialog.dismiss();
                     AlertDialog.Builder builder = new AlertDialog.Builder(GameScreen.this);
                     builder.setTitle(R.string.app_name);
@@ -278,7 +272,6 @@ public class GameScreen extends AppCompatActivity {
                             })
                             .setNegativeButton("לא", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-//                                    finish();
                                     gameProcess();
                                 }
                             });
@@ -290,11 +283,10 @@ public class GameScreen extends AppCompatActivity {
         });
 
         gameProcess();
-
     }
 
-    public void AnswersCustomAlertDialog(){// the dialog of the answers.
 
+    public void AnswersCustomAlertDialog(){// the dialog of the answers.
 
         btn1=dialog.findViewById(R.id.button);
         btn2=dialog.findViewById(R.id.button2);

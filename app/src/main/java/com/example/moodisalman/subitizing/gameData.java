@@ -16,5 +16,6 @@ public class gameData {
     static int gameMode;
     static int[] xArr ,yArr;
     static  int[] howManyApprnce;
+    static int millesecDiffrence=0;
 
 }

@@ -15,39 +15,39 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:layout_marginRight="12dp"
             android:background="@drawable/button_bg"
             android:text="Button"
-            android:textSize="22sp" />
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:layout_marginRight="12dp"
             android:background="@drawable/button_bg"
             android:text="Button"
-            android:textSize="22sp" />
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:layout_marginRight="12dp"
             android:background="@drawable/button_bg"
             android:text="Button"
-            android:textSize="22sp" />
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:layout_marginRight="12dp"
             android:background="@drawable/button_bg"
             android:text="Button"
-            android:textSize="22sp" />
+            android:textSize="30sp" />
     </LinearLayout>
 
 </RelativeLayout>
