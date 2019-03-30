@@ -9,6 +9,7 @@ public class gameData {
      * gameMode= 0 -> regular mode , 1 -> random mode
      * xArr , yArr = saves random x,y for objects in random mode.
      * howManyApprnce = to check how many appearance of each objNum.
+     * millesecDiffrence = to decrease or increase the amount of milliseconds each time
      */
     static int objNum ;
     static int outLevel;

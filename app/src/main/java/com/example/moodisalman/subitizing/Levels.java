@@ -1,5 +1,10 @@
 package com.example.moodisalman.subitizing;
 
+/**
+ * Level class connected to the activity_levels.xml, created to choose the wanted level of the game for
+ * the player.
+ * **/
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -33,6 +38,11 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
         btn5.setOnClickListener(this);
         btn6.setOnClickListener(this);
 
+        /**
+         * dialog created to choose the mode of the game either random or regular ,
+         * activated when the user chhose a level between 1 to 3
+         * **/
+
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.sub_level);
@@ -40,20 +50,20 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v) {// where the buttons are init
 
         switch (v.getId()){
             case R.id.button5:
                 gameData.outLevel=1;
-                AnswersCustomAlertDialog();
+                LevelModeDialog();
                 break;
             case R.id.button6:
                 gameData.outLevel=2;
-                AnswersCustomAlertDialog();
+                LevelModeDialog();
                 break;
             case R.id.button7:
                 gameData.outLevel=3;
-                AnswersCustomAlertDialog();
+                LevelModeDialog();
                 break;
             case R.id.button8:
                 gameData.outLevel=4;
@@ -77,12 +87,10 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-    public void AnswersCustomAlertDialog(){// the dialog of the answers.
+    public void LevelModeDialog(){// a function to init the dialog.
 
         btnG=dialog.findViewById(R.id.button11);
         btnR=dialog.findViewById(R.id.button12);
-
-//        dialog.setCancelable(false);
 
 
         dialog.show();

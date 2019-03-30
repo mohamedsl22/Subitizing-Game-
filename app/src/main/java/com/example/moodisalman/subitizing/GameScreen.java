@@ -40,7 +40,7 @@ public class GameScreen extends AppCompatActivity {
     private Button btn1,btn2,btn3,btn4;
     private GifImageView gif;
     private  Dialog dialog;
-    private MediaPlayer rightSound , wrongSound;
+    private MediaPlayer rightSound , wrongSound,bgSound;
     /**
      * tmpLevel=also saves the current gameData.objNum temprarly (objNum=how many objects, used in dialog)
      * curLevWin=saves num of wins in the current objNum
@@ -80,6 +80,7 @@ public class GameScreen extends AppCompatActivity {
 
         rightSound=MediaPlayer.create(this , R.raw.correct);
         wrongSound=MediaPlayer.create(this , R.raw.trya);
+
 
 
         numOfWin=0;
@@ -231,7 +232,7 @@ public class GameScreen extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume() { //resuming mode of the activity
         super.onResume();
 
         if(dialog.isShowing()){
@@ -249,6 +250,10 @@ public class GameScreen extends AppCompatActivity {
             }
         });
         /** **/
+
+        bgSound=MediaPlayer.create(this , R.raw.bgsnd);//background music
+        bgSound.start();
+        bgSound.setLooping(true);
 
         dialog.setOnKeyListener(new Dialog.OnKeyListener() {
 
@@ -384,7 +389,7 @@ public class GameScreen extends AppCompatActivity {
 
     }
 
-    private void dialogHelpMethod(Dialog d, int i){//if pressed any button in the dialog
+    private void dialogHelpMethod(Dialog d, int i){//if pressed any button in the answers dialog
         d.dismiss();
 
         if (i==tmpLevel)
@@ -426,4 +431,9 @@ public class GameScreen extends AppCompatActivity {
 //
 //    }
 
+    @Override
+    protected void onPause() {// pausing mode of the activity
+        super.onPause();
+        bgSound.stop();
+    }
 }

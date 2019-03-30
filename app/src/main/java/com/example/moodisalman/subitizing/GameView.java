@@ -14,7 +14,7 @@ public class GameView extends View  {
     private Bitmap obj;
     private Rect rect[];
     private final int REGULAR_MODE=0,RANDOM_MODE=1;
-    private Paint penInfo;
+    private Paint penInfo,penInfo1;
     private final int DISAPPEAR_OBJECTS=-1 ;
     private String mode;
 
@@ -25,7 +25,11 @@ public class GameView extends View  {
 
         penInfo = new Paint(Paint.ANTI_ALIAS_FLAG);
         penInfo.setColor(Color.YELLOW);
-        penInfo.setTextSize(40);
+        penInfo.setTextSize(30);
+
+        penInfo1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        penInfo1.setColor(Color.YELLOW);
+        penInfo1.setTextSize(22);
 
 
     }
@@ -59,8 +63,9 @@ public class GameView extends View  {
 
 
 
-        canvas.drawText("TIME: "+"("+(1500-gameData.millesecDiffrence)+")  MODE: ("+mode+")", 10, 40, penInfo);
-        canvas.drawText("LEVEL: "+ gameData.outLevel , canvas.getWidth()-180, 40, penInfo);
+        canvas.drawText("TIME: "+"("+(1500-gameData.millesecDiffrence)+")  MODE: ("+mode+")", 10, 31, penInfo);
+        canvas.drawText("LEVEL: "+ gameData.outLevel , canvas.getWidth()-128, 31, penInfo);
+        canvas.drawText("W: "+"("+GameScreen.numOfWin+")  L: ("+GameScreen.numOfLose+")", 10, canvas.getHeight()-100, penInfo1);
 
         // Animation loop (redraw this view by invalidate - call onDraw() - for animation loop
        invalidate();   // temporary method - will be replaced later by Animation Thread
