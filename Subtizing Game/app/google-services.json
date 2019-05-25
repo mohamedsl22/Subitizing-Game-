@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "31427063927",
+    "firebase_url": "https://subitizing-6450e.firebaseio.com",
+    "project_id": "subitizing-6450e",
+    "storage_bucket": "subitizing-6450e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31427063927:android:296c6bccb0059b36",
+        "android_client_info": {
+          "package_name": "com.modu.moodisalman.subitizing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31427063927-lt8fcukjuavn5gknv5jm8a5sdcjac50f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.modu.moodisalman.subitizing",
+            "certificate_hash": "ef5b53c488b12ca0d3aa41edab02ba8f35217d2b"
+          }
+        },
+        {
+          "client_id": "31427063927-nhqfu9iu6ugii9p5imh9ie1nafmgiqai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYXImicdo2IJQyijYSlE1SdGohJDnjpes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31427063927-nhqfu9iu6ugii9p5imh9ie1nafmgiqai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
