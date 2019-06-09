@@ -1,13 +1,12 @@
 package com.example.moodisalman.subitizingadmin;
 
 public class Result {
-    int win, lose,level;
-    String mode, date,timeInMillSec;
+    String mode, date,timeInMillSec,win, lose,level;
 
     public Result() {
     }
 
-    public Result(int win, int lose, String mode, String date, int level, String id) {
+    public Result(String win, String lose, String mode, String date, String level, String id) {
         this.win = win;
         this.lose = lose;
         this.mode = mode;
@@ -16,11 +15,11 @@ public class Result {
         this.timeInMillSec = id;
     }
 
-    public int getWin() {
+    public String getWin() {
         return win;
     }
 
-    public int getLose() {
+    public String getLose() {
         return lose;
     }
 
@@ -32,7 +31,7 @@ public class Result {
         return date;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 

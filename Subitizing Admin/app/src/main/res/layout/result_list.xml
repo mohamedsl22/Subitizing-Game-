@@ -38,6 +38,14 @@
         android:textStyle="normal|bold" />
 
     <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="TextView"
+        android:textStyle="normal|bold" />
+
+    <TextView
         android:id="@+id/txttime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -28,6 +28,7 @@ public class ResultsListAdapter extends ArrayAdapter<Result> {
         TextView txtLev=listViewItem.findViewById(R.id.txtLev);
         TextView txtWin=listViewItem.findViewById(R.id.txtwins);
         TextView txtLose=listViewItem.findViewById(R.id.txtlose);
+        TextView txtToltal=listViewItem.findViewById(R.id.txtTotal);
         TextView txtTimeinMilSec=listViewItem.findViewById(R.id.txttime);
 
         Result res= resList.get(position);
@@ -36,6 +37,11 @@ public class ResultsListAdapter extends ArrayAdapter<Result> {
         txtLev.setText("Level: "+res.getLevel());
         txtWin.setText("Wins: "+res.getWin());
         txtLose.setText("Losses: "+res.getLose());
+
+        int wins= Integer.parseInt(res.getWin());
+        int losses= Integer.parseInt(res.getLose());
+
+        txtToltal.setText("Total: "+(wins+losses));
         txtTimeinMilSec.setText("Final time in MillSec: "+res.timeInMillSec);
 
         return listViewItem;

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,46 +23,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Vector;
+import es.dmoral.toasty.Toasty;
+
 
 public class AddUser extends AppCompatActivity {
-
-
 
     private EditText edtName , edtID , edtAge;
     private Button btnAdd;
     private DatabaseReference dbUser;
-    private Vector<String> usersVec;
     private FirebaseAuth mAuth;
     private Query idQuery;
     static String Amail,Apass;
-    private FirebaseAuth.AuthStateListener authStateListener;
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
         mAuth=FirebaseAuth.getInstance();
-//        authStateListener=new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser usr=FirebaseAuth.getInstance().getCurrentUser();
-//
-//                if (usr != null){
-//
-//                }
-//            }
-//        };
-
-
 
         edtID=findViewById(R.id.edtID);
         edtName=findViewById(R.id.edtUserName);
         edtAge=findViewById(R.id.edtAge);
         btnAdd=findViewById(R.id.btnFinalAdd);
+        progressBar=findViewById(R.id.progressBar);
 
-//        usersVec=allUsers();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +67,7 @@ public class AddUser extends AppCompatActivity {
         if (!TextUtils.isEmpty(name)){
             if (!TextUtils.isEmpty(Id)){
                 if (!TextUtils.isEmpty(age)){
+                    progressBar.setVisibility(View.VISIBLE);
                     idQuery=FirebaseDatabase.getInstance().getReference().child("users").orderByChild("id")
                             .equalTo(Id);
 
@@ -88,13 +75,17 @@ public class AddUser extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            if (dataSnapshot.getChildrenCount()>0)
-                                print("User already registered.");
+                            if (dataSnapshot.getChildrenCount()>0){
+                                Toasty.error(AddUser.this, "User already registered.",
+                                        Toast.LENGTH_SHORT, true).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
                             else{
                                 mAuth.createUserWithEmailAndPassword(mail,pass).addOnCompleteListener(AddUser.this,
                                         new OnCompleteListener<AuthResult>() {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
+
                                                 if (!task.isSuccessful()){
                                                     print("Adding Error");
                                                 }
@@ -107,13 +98,17 @@ public class AddUser extends AppCompatActivity {
                                                     mAuth.signInWithEmailAndPassword(Amail,Apass).addOnCompleteListener(AddUser.this, new OnCompleteListener<AuthResult>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<AuthResult> task) {
+                                                            progressBar.setVisibility(View.GONE);
                                                             if (!task.isSuccessful()){
                                                                 print("SignIn Error " + mail+" "+pass);
                                                             }
+                                                            else
+                                                                Toasty.success(AddUser.this, "User Added Successfully.",
+                                                                        Toast.LENGTH_SHORT, true).show();
 
                                                         }
                                                     });
-                                                    print("User Added Successfully.");
+
                                                 }
                                             }
                                         });

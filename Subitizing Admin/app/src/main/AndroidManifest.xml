@@ -9,10 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ResultsList"></activity>
-        <activity android:name=".UsersList" />
-        <activity android:name=".AddUser" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".AllResults"
+            android:theme="@style/AppTheme2"
+            android:label="Results list"></activity>
+        <activity
+            android:name=".Chart"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".UserFile"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".UsersList"
+            android:label="Users list"
+            android:theme="@style/AppTheme2" />
+        <activity
+            android:name=".AddUser"
+            android:label="Add User" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,37 +19,44 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultsList extends AppCompatActivity {
+public class AllResults extends AppCompatActivity {
 
     private ListView listView;
     private List<Result> listResults;
     private DatabaseReference dbUser;
-    private TextView txtName, txtID;
     private DatabaseReference getDbUser;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results_list);
+        setContentView(R.layout.activity_all_results);
 
-        dbUser= FirebaseDatabase.getInstance().getReference("results");
         listView=findViewById(R.id.ListViewResults);
-        listResults =new ArrayList<>();
-        txtName=findViewById(R.id.txtNameRes);
-        txtID=findViewById(R.id.txtIdRes);
+        progressBar=findViewById(R.id.progressBar3);
 
         Intent intent=getIntent();
         String id=intent.getStringExtra("id");
         String name=intent.getStringExtra("name");
-        String userID=intent.getStringExtra("userid");
+        final String userID=intent.getStringExtra("userID");
 
-        txtName.setText(name);
-        txtID.setText("ID: "+id);
 
+        dbUser= FirebaseDatabase.getInstance().getReference("results");
         getDbUser=FirebaseDatabase.getInstance().getReference("results").child(userID);
 
+        listResults =new ArrayList<>();
 
 
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -56,14 +66,16 @@ public class ResultsList extends AppCompatActivity {
         getDbUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressBar.setVisibility(View.VISIBLE);
                 listResults.clear();
                 for (DataSnapshot u : dataSnapshot.getChildren()){
                     Result res=u.getValue(Result.class);
                     listResults.add(res);
                 }
 
-                ResultsListAdapter adapter=new ResultsListAdapter(ResultsList.this, listResults);
+                ResultsListAdapter adapter=new ResultsListAdapter(AllResults.this, listResults);
                 listView.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
 
             }
 
