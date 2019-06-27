@@ -12,12 +12,9 @@ the project is 2 apps, the first app is the game it self , and the second app is
 |---|---|
 | Version Control System| git & github |
 | Recommended IDE | [Android Studio](https://developer.android.com/studio) |
-| Build Status (CI) |  [![Build Status](https://travis-ci.org/ahmad2806/Animals-shelter.svg?branch=master)](https://travis-ci.org/ahmad2806/Animals-shelter) |
-| Dependencies | [![David](https://img.shields.io/david/dev/idleberg/vscode-badges.svg?style=flat-square)](https://david-dm.org/ahmad2806/Animals-shelter?type=dev) |
 | License | [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/) |
 | Test Coverege | [![codecov.io](https://codecov.io/github/ahmad2806/Animals-shelter/coverage.svg?branch=master)](https://codecov.io/github/ahmad2806/Animals-shelter?branch=master) |
 | Code Quality | [![Code Climate](https://codeclimate.com/github/jce-il/project-template.svg)](https://codeclimate.com/github/ahmad2806/Animals-shelter) |
-| Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/ahmad2806/Animals-shelter) |
 | Current Release | [Current Version](https://play.google.com/store/apps/details?id=com.modu.moodisalman.subitizing&hl=en_CA)] |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/ahmad2806/Animals-shelter.svg?style=flat)](https://github.com/ahmad2806/Animals-shelter/issues) |
 | Project Management Board| [here](https://github.com/mohamedsl22/Subitizing-Game-/projects/1) |
