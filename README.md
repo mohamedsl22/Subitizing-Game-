@@ -16,7 +16,7 @@ the project is 2 apps, the first app is the game it self , and the second app is
 | Test Coverege | [![codecov.io](https://codecov.io/github/ahmad2806/Animals-shelter/coverage.svg?branch=master)](https://codecov.io/github/ahmad2806/Animals-shelter?branch=master) |
 | Code Quality | [![Code Climate](https://codeclimate.com/github/jce-il/project-template.svg)](https://codeclimate.com/github/ahmad2806/Animals-shelter) |
 | Current Release | [Current Version](https://play.google.com/store/apps/details?id=com.modu.moodisalman.subitizing&hl=en_CA)] |
-| Issues | [![GitHub issues](https://img.shields.io/github/issues/ahmad2806/Animals-shelter.svg?style=flat)](https://github.com/ahmad2806/Animals-shelter/issues) |
+| Issues | [![GitHub issues](https://img.shields.io/github/issues/ahmad2806/Animals-shelter.svg?style=flat)](https://github.com/mohamedsl22/Subitizing-Game-/issues) |
 | Project Management Board| [here](https://github.com/mohamedsl22/Subitizing-Game-/projects/1) |
 
 
