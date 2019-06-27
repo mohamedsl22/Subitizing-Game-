@@ -13,6 +13,7 @@ the project is 2 apps, the first app is the game it self , and the second app is
 | Version Control System| git & github |
 | Recommended IDE | [Android Studio](https://developer.android.com/studio) |
 | License | [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/) |
+| Code Style | [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/mohamedsl22/Subitizing-Game-) |
 | Current Release | [Current Version](https://play.google.com/store/apps/details?id=com.modu.moodisalman.subitizing&hl=en_CA) |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/ahmad2806/Animals-shelter.svg?style=flat)](https://github.com/mohamedsl22/Subitizing-Game-/issues) |
 | Project Management Board| [here](https://github.com/mohamedsl22/Subitizing-Game-/projects/1) |
