@@ -17,6 +17,7 @@ the project is 2 apps, the first app is the game it self , and the second app is
 | Current Release | [Current Version](https://play.google.com/store/apps/details?id=com.modu.moodisalman.subitizing&hl=en_CA) |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/ahmad2806/Animals-shelter.svg?style=flat)](https://github.com/mohamedsl22/Subitizing-Game-/issues) |
 | Project Management Board| [here](https://github.com/mohamedsl22/Subitizing-Game-/projects/1) |
+|Project Diary|[Diary](https://github.com/mohamedsl22/Subitizing-Game-/wiki/Project-Diary)|
 
 
 
