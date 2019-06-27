@@ -21,9 +21,9 @@ the project is 2 apps, the first app is the game it self , and the second app is
 | Current Release | [Current Version](https://play.google.com/store/apps/details?id=com.modu.moodisalman.subitizing&hl=en_CA)] |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/ahmad2806/Animals-shelter.svg?style=flat)](https://github.com/ahmad2806/Animals-shelter/issues) |
 | Project Management Board| [here](https://github.com/mohamedsl22/Subitizing-Game-/projects/1) |
-| Contributors | [![GitHub contributors](https://img.shields.io/github/contributors/cdnjs/cdnjs.svg)](https://github.com/ahmad2806/Animals-shelter/graphs/contributors)|
-| Security | [![Known Vulnerabilities](https://snyk.io/test/github/ahmad2806/Animals-shelter/badge.svg)](https://snyk.io/test/github/ahmad2806/Animals-shelter) |
-| Documnetation | [![Inline docs](http://inch-ci.org/github/ahmad2806/Animals-shelter.svg?branch=master)](http://inch-ci.org/github/ahmad2806/Animals-shelter) |
+
+
+
 
 
 
