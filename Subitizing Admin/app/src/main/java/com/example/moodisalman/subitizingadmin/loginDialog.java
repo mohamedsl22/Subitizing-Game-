@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 /**
@@ -36,9 +37,19 @@ public class loginDialog extends AppCompatDialogFragment {
                 .setPositiveButton("login", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String mailText=edtMail.getText().toString().trim();
-                String passText=edtPass.getText().toString().trim();
-                listener.applyText(mailText,passText);
+
+//                if (edtMail.getText().toString().trim().length() > 0
+//                        || edtPass.getText().toString().trim().length() > 0){
+//                    String mailText="";
+//                    String passText="";
+//                    listener.applyText(mailText,passText);
+//                }
+//                else{
+
+                    String mailText=edtMail.getText().toString().trim();
+                    String passText=edtPass.getText().toString().trim();
+                    listener.applyText(mailText,passText);
+//                }
 
             }
         });
@@ -48,7 +59,7 @@ public class loginDialog extends AppCompatDialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context) {// when there is login info
         super.onAttach(context);
 
         try {
@@ -60,5 +71,9 @@ public class loginDialog extends AppCompatDialogFragment {
 
     public interface LoginDialogListener{
         void applyText(String mail , String pass);
+    }
+
+    private void print(String s ){
+        Toast.makeText(getContext(),s, Toast.LENGTH_SHORT).show();
     }
 }

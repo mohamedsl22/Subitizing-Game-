@@ -18,6 +18,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * This activity is for the main activity shown after the login**/
+
 public class MainActivity extends AppCompatActivity implements loginDialog.LoginDialogListener {
     private CardView crdAdd,crdList,crdNotes,crdSgnOut;
     private Intent i;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
 
         crdAdd=findViewById(R.id.btnAddUser);
         crdList=findViewById(R.id.btnList);
+        crdNotes=findViewById(R.id.btnNote);
+        crdSgnOut=findViewById(R.id.btnSignout);
 
 
         crdAdd.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +58,23 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
             }
         });
 
+        crdNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                i = new Intent(getApplicationContext(), Pie_Chart.class);
+                startActivity(i);
+            }
+        });
+
+        crdSgnOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                print("Signed out");
+                openDialog();
+            }
+        });
+
 
 
     }
@@ -68,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
     @Override
     public void applyText(final String mail, final String pass) {
         // what I want to do with the id.
+
+        try{
+
         AddUser.Amail=mail;
         AddUser.Apass=pass;
         mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -79,7 +104,10 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
                 }
 
             }
-        });
+        });} catch (Exception e ){
+            print("You must type mail and password");
+            openDialog();
+        }
     }
 
     @Override

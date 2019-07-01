@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -26,9 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * This activity is used to show all results for a specific user in bar chart**/
 
 public class Chart extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private String userID;
@@ -92,10 +92,10 @@ public class Chart extends AppCompatActivity implements AdapterView.OnItemSelect
         query= FirebaseDatabase.getInstance().getReference().child("results").child(userID).orderByChild("level")
                 .equalTo(lev);
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {// to bring all the needed data
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount()>0){
+                if (dataSnapshot.getChildrenCount()>0){//means there is results (not empty)
                     int i=1;
                     for (DataSnapshot u : dataSnapshot.getChildren()){
                         Result res=u.getValue(Result.class);

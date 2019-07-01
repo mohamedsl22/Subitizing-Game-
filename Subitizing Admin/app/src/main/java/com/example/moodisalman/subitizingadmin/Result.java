@@ -1,5 +1,7 @@
 package com.example.moodisalman.subitizingadmin;
 
+/**This class is for the result objects structure, (all the info that should know in each game) **/
+
 public class Result {
     String mode, date,timeInMillSec,win, lose,level;
 

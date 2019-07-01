@@ -21,6 +21,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This activity for showing the users list, when the admin get into this activity, all the users
+ * info will be retrieved from the fireBase and showed in a list.
+ **/
+
 public class UsersList extends AppCompatActivity {
 
     private ListView listView;

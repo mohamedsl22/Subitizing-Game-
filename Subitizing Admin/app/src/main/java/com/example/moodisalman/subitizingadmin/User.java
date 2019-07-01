@@ -1,5 +1,7 @@
 package com.example.moodisalman.subitizingadmin;
 
+/**This class is for the user objects structure, (all the info that should know about each user) **/
+
 public class User {
 
 

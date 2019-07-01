@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This activity used to show all the results for a specific user by a list **/
+
 public class AllResults extends AppCompatActivity {
 
     private ListView listView;

@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FFc107</color>
+    <color name="colorPrimaryDark">#067A70</color>
+    <color name="colorPrimaryDark2">#A5050E64</color>
+    <color name="colorPrimaryDark1">#181A24</color>
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="lightgray">#ededed</color>
+    <color name="deeppurple">#7c4dff</color>
+    <color name="yello">#ffb300</color>
+    <color name="green">#00fba5</color>
+    <color name="white">#cccccc</color>
+    <color name="onWhite">#FFFFFF</color>
+    <color name="colorAccent">#FF0481</color>
 </resources>

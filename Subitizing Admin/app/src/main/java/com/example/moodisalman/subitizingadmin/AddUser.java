@@ -25,6 +25,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import es.dmoral.toasty.Toasty;
 
+/**
+ * This activity used to add users to the dataBase (fireBase) only by the admin,
+ * the admin must insert user name , and Id , and Age . **/
+
 
 public class AddUser extends AppCompatActivity {
 
@@ -69,13 +73,13 @@ public class AddUser extends AppCompatActivity {
                 if (!TextUtils.isEmpty(age)){
                     progressBar.setVisibility(View.VISIBLE);
                     idQuery=FirebaseDatabase.getInstance().getReference().child("users").orderByChild("id")
-                            .equalTo(Id);
+                            .equalTo(Id); // used to check if the user is already registered
 
                     idQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            if (dataSnapshot.getChildrenCount()>0){
+                            if (dataSnapshot.getChildrenCount()>0){ // means the user found in the db
                                 Toasty.error(AddUser.this, "User already registered.",
                                         Toast.LENGTH_SHORT, true).show();
                                 progressBar.setVisibility(View.GONE);

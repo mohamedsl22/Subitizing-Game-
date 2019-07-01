@@ -1,8 +1,8 @@
 package com.example.moodisalman.subitizing;
 
+
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -28,13 +28,9 @@ import java.util.Date;
 
 
 /**
- * so how the game works?
- * the game has 6 levels, each objNum has four num of objects, so let's say objNum 1 -> it has from 1 to 4
- * and objNum 2 -> from 2 to 5, so basically from the objNum num to objNum num+3 ,
- * in each objNum the player must success in 16 repeats if not then the repeats will increase automatically,
- * also in each objNum the time will decrease with each success or increase with each lose , and will return to what it
- * was in the next objNum.
+ *This class is for the game logic .
  */
+
 
 public class GameScreen extends AppCompatActivity {
     private GameView game;
@@ -45,11 +41,13 @@ public class GameScreen extends AppCompatActivity {
     private Dialog dialog;
     private MediaPlayer rightSound, wrongSound, bgSound;
     /**
+     *
      * tmpLevel=also saves the current gameData.objNum temprarly (objNum=how many objects, used in dialog)
      * curLevWin=saves num of wins in the current objNum
+     *
      */
     private int tmpLevel, curLevWin = 0;
-    private String resId;
+    private String resId;//each game has a result id
     private final int DISAPPEAR_OBJECTS = -1;
     private final int THIRTY_MILLISEC = 30;
     private final int REGULAR_MODE = 0, RANDOM_MODE = 1;
@@ -74,7 +72,7 @@ public class GameScreen extends AppCompatActivity {
         layout.addView(game, width - 1, height - 1);
         /** **/
 
-        /** Dialog **/
+        /**init the Dialog of the answers **/
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.activity_answers);
@@ -84,7 +82,7 @@ public class GameScreen extends AppCompatActivity {
         rightSound = MediaPlayer.create(this, R.raw.correct);
         wrongSound = MediaPlayer.create(this, R.raw.trya);
 
-
+        // init variables
         numOfWin = 0;
         numOfLose = 0;
         gameData.objNum = 0;
@@ -93,11 +91,119 @@ public class GameScreen extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() { //resuming mode of the activity
+        super.onResume();
 
-    private void print(String s) {
-        Toast.makeText(this, s,
-                Toast.LENGTH_SHORT).show();
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+
+        /**choose game objects **/
+        switch (gameData.chosenGame){
+            case 1:
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.underwater1);
+                bgSound = MediaPlayer.create(this, R.raw.bgsnd);//background music
+                break;
+            case 2:
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.nightsky);
+                bgSound = MediaPlayer.create(this, R.raw.nightmusic);
+                break;
+            case 3:
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.snowbg);
+                bgSound = MediaPlayer.create(this, R.raw.wind_music);
+                break;
+            case 4:
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.fallbgvideo);
+                bgSound = MediaPlayer.create(this, R.raw.fall_music);
+                break;
+            case 5:
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.nightsky);
+                bgSound = MediaPlayer.create(this, R.raw.nightmusic);
+                break;
+            case 6:
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.fireplace);
+                bgSound = MediaPlayer.create(this, R.raw.fireplacemode);
+                break;
+
+        }
+        /****/
+
+
+        /** for the background gameData and playing the game**/
+
+        videoView.setVideoURI(ur);
+        videoView.start();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+            }
+        });
+        /** **/
+
+        /**music of the game **/
+        bgSound.start();
+        bgSound.setLooping(true);
+
+        /****/
+
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.dismiss();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GameScreen.this);
+                    builder.setTitle(R.string.app_name);
+                    builder.setIcon(R.mipmap.ic_launcher);
+                    builder.setMessage("Exit ?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    finish();
+
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    gameProcess();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                return true;
+            }
+        });
+        gameProcess();
     }
+
+
+    @Override
+    protected void onPause() {// pausing mode of the activity
+        super.onPause();
+
+        bgSound.stop();
+
+        /**in case the player got out of the game for couple seconds , when he get back the results
+         * will be saved on the same game result id on the data-base **/
+
+        if (dbManager.userID!=null){ //if it's not a guest
+            if (resId!=null && !resId.isEmpty()){ //if the game has a result id
+                addResultToDB(resId);
+            }
+            else {// if it doesn't -> create one and add the results to it
+                resId =dbManager.dbResult.push().getKey();
+                addResultToDB(resId);
+            }
+        }
+
+    }
+
+
 
     private void timer() {//delayed time until showing the the dialog
 
@@ -105,7 +211,6 @@ public class GameScreen extends AppCompatActivity {
         final int delay = 1500; //milliseconds
         handler.postDelayed(new Runnable() {
             public void run() {
-                //do exampleing
                 gameData.objNum = DISAPPEAR_OBJECTS;
                 AnswersCustomAlertDialog();
             }
@@ -115,8 +220,8 @@ public class GameScreen extends AppCompatActivity {
 
     public void gameProcess() {//game rules
 
-        if (gameData.repeats == 0) {//means at the first of the objNum to show the new add
-            if (gameData.outLevel != 1) {
+        if (gameData.repeats == 0) {//check if it's the start of the level, to show the new objNum
+            if (gameData.outLevel != 1) {//at level 1 the array is already init to zeros so it's unnecessary
                 for (int i = 0; i < 9; i++)
                     gameData.howManyApprnce[i] = 0;
             }
@@ -126,11 +231,12 @@ public class GameScreen extends AppCompatActivity {
                 gameData.objNum = gameData.outLevel + 3;
         } else {
             while (true) {
+                //choose gameData.objNum randomly according to the level
                 gameData.objNum = (int) (Math.random() * ((gameData.outLevel + 3) - gameData.outLevel + 1)) + gameData.outLevel;
                 if (gameData.outLevel < 4 && gameData.gameMode == REGULAR_MODE) {//to ensure that objNum appear only twice in reg mode
                     if (gameData.howManyApprnce[gameData.objNum - 1] < 11)
                         break;
-                } else {//if randam mode, or reg mode above lev 3 (appears 4 times )
+                } else {//if random mode, or reg mode above lev 3 (appears 4 times )
                     if (gameData.howManyApprnce[gameData.objNum - 1] < 22)
                         break;
 
@@ -149,7 +255,8 @@ public class GameScreen extends AppCompatActivity {
         timer();
     }
 
-    private void incaseOfLose() {// what to do incase of lose.
+
+    private void incaseOfLose() {// what to do in case of lose.
         wrongSound.start();
 
         numOfLose++;
@@ -169,7 +276,7 @@ public class GameScreen extends AppCompatActivity {
 
     }
 
-    private void incaseOfWin() {//what to do incase of win
+    private void incaseOfWin() {//what to do in case of win
         rightSound.start();
         gameData.repeats++;
         numOfWin++;
@@ -229,63 +336,7 @@ public class GameScreen extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() { //resuming mode of the activity
-        super.onResume();
 
-        if (dialog.isShowing()) {
-            dialog.dismiss();
-        }
-/** for the background gameData and playing the game**/
-
-        ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.underwater1);
-        videoView.setVideoURI(ur);
-        videoView.start();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setLooping(true);
-            }
-        });
-        /** **/
-
-        bgSound = MediaPlayer.create(this, R.raw.bgsnd);//background music
-        bgSound.start();
-        bgSound.setLooping(true);
-
-        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
-
-            @Override
-            public boolean onKey(DialogInterface arg0, int keyCode,
-                                 KeyEvent event) {
-                // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(GameScreen.this);
-                    builder.setTitle(R.string.app_name);
-                    builder.setIcon(R.mipmap.ic_launcher);
-                    builder.setMessage("בטוח שרוצה לצאת?")
-                            .setCancelable(false)
-                            .setPositiveButton("כן", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-
-                                    Intent play = new Intent(getApplicationContext(), Levels.class);
-                                    startActivity(play);
-                                }
-                            })
-                            .setNegativeButton("לא", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    gameProcess();
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-                return true;
-            }
-        });
-        gameProcess();
-    }
 
 
     public void AnswersCustomAlertDialog() {// the dialog of the answers.
@@ -361,8 +412,18 @@ public class GameScreen extends AppCompatActivity {
         animtDialog.setCancelable(false);
         animtDialog.show();
 
+        InputStream inputStream;
+
         try {
-            InputStream inputStream = getAssets().open("feedbackgif.gif");
+            switch (gameData.chosenGame){
+                case 3:
+                case 6:
+                    inputStream = getAssets().open("snow_feedback.gif");
+                    break;
+                default:
+                    inputStream = getAssets().open("feedbackgif.gif");
+            }
+
             byte[] bytes = IOUtils.toByteArray(inputStream);
             gif.setBytes(bytes);
             gif.startAnimation();
@@ -378,7 +439,7 @@ public class GameScreen extends AppCompatActivity {
                 gif.stopAnimation();
                 gameProcess();
             }
-        }, 2000);
+        }, 2100);
 
 
     }
@@ -393,23 +454,8 @@ public class GameScreen extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPause() {// pausing mode of the activity
-        super.onPause();
-        bgSound.stop();
 
-        if (dbManager.userID!=null){
-            if (resId!=null && !resId.isEmpty())
-                addResultToDB(resId);
-            else {
-                resId =dbManager.dbResult.push().getKey();
-                addResultToDB(resId);
-            }
-        }
-
-    }
-
-    private String getDateTime() {
+    private String getDateTime() {// to return the date of the current day.
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         return dateFormat.format(date);
@@ -427,14 +473,28 @@ public class GameScreen extends AppCompatActivity {
 
 
 
-            Result result = new Result(numOfWin, numOfLose, mode,getDateTime(),gameData.outLevel
-                    ,String.valueOf(1500-gameData.millesecDiffrence) );
+            Result result = new Result(String.valueOf(numOfWin), String.valueOf(numOfLose),
+                    mode,getDateTime(),String.valueOf(gameData.outLevel),
+                    String.valueOf(1500-gameData.millesecDiffrence) );
 
             dbManager.dbResult.child(idd).setValue(result);
+
+            print("wins "+dbManager.TotalWins+" loses "+dbManager.TotalLoses);
+
+            ResultsInfo resultInfo = new ResultsInfo(dbManager.TotalWins+numOfWin, dbManager.TotalLoses+numOfLose
+                    ,dbManager.TotalGames+1);
+            dbManager.dbResultsInfo.setValue(resultInfo );
 
             print("Data has been stored successfully");
 
         }
 
+    }
+
+
+
+    private void print(String s) {// used to print toasts
+        Toast.makeText(this, s,
+                Toast.LENGTH_SHORT).show();
     }
 }

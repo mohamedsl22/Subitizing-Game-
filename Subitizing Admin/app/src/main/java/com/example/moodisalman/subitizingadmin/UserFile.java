@@ -18,18 +18,25 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static com.example.moodisalman.subitizingadmin.AddUser.Amail;
 import static com.example.moodisalman.subitizingadmin.AddUser.Apass;
 
+/**
+ * This activity for showing a specific user profile , the admin can choose to see the user
+ * improvements and results by charts or by list, and also can update the user info or delete it.
+ * **/
+
 
 public class UserFile extends AppCompatActivity {
 
-
-    private TextView txtName, txtID;
-    private Button btnChart;
+    private TextView txtName, txtID ,txtWinAvg, txtLoseAvg,txtTotalPlays;
+    private Button btnChart, btnPieChart,btnLinChart;
     private LinearLayout btnShowRes, btnDeleteUser, btnUpdateUser;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -46,15 +53,23 @@ public class UserFile extends AppCompatActivity {
         txtName=findViewById(R.id.txtNameRes);
         txtID=findViewById(R.id.txtIdRes);
         btnChart=findViewById(R.id.btnChart);
+        btnLinChart=findViewById(R.id.btnChart2);
+        btnPieChart=findViewById(R.id.btnChart3);
         btnShowRes =findViewById(R.id.showRes);
         btnDeleteUser =findViewById(R.id.deleteUser);
         btnUpdateUser =findViewById(R.id.updateUser);
         mAuth=FirebaseAuth.getInstance();
+        txtLoseAvg=findViewById(R.id.txtAvgLose);
+        txtWinAvg=findViewById(R.id.txtAvgWin);
+        txtTotalPlays=findViewById(R.id.txtNumOfPlays);
+
 
         Intent intent=getIntent();
         id=intent.getStringExtra("id");
         name=intent.getStringExtra("name");
         userID=intent.getStringExtra("userid");
+
+        getInfo();
 
         txtName.setText(name);
         txtID.setText("ID: "+id);
@@ -64,6 +79,24 @@ public class UserFile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(getApplicationContext(),Chart.class);
+                i.putExtra("userID",userID);
+                startActivity(i);
+            }
+        });
+
+        btnPieChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(getApplicationContext(),Pie_Chart.class);
+                i.putExtra("userID",userID);
+                startActivity(i);
+            }
+        });
+
+        btnLinChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(getApplicationContext(),LineChart.class);
                 i.putExtra("userID",userID);
                 startActivity(i);
             }
@@ -117,8 +150,11 @@ public class UserFile extends AppCompatActivity {
 
                             DatabaseReference dUsers= FirebaseDatabase.getInstance().getReference("users").child(userID);
                             DatabaseReference dResults= FirebaseDatabase.getInstance().getReference("results").child(userID);
+                            DatabaseReference dInfo= FirebaseDatabase.getInstance().getReference("info").child(userID);
+
                             dUsers.removeValue();
                             dResults.removeValue();
+                            dInfo.removeValue();
 
                             firebaseUser=mAuth.getCurrentUser();
                             firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -190,6 +226,33 @@ public class UserFile extends AppCompatActivity {
         alertDialog.show();
 
 
+    }
+
+    public void getInfo(){
+        DatabaseReference dInfo= FirebaseDatabase.getInstance().getReference("info").child(userID);
+
+        dInfo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ResultsInfo res=dataSnapshot.getValue(ResultsInfo.class);
+                float win=res.getWins();
+                float lose=res.getLoses();
+                int Totalplays=res.getNumOfPlays();
+
+                String strLose = String.format("%.2f", (lose/(lose+win))*100);
+                String strWin = String.format("%.2f", (win/(lose+win))*100);
+
+                txtTotalPlays.setText(String.valueOf(Totalplays));
+                txtLoseAvg.setText(strLose+"%");
+                txtWinAvg.setText(strWin+"%");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void print(String s){

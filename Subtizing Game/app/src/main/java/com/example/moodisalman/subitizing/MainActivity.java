@@ -2,14 +2,21 @@ package com.example.moodisalman.subitizing;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.felipecsl.gifimageview.library.BuildConfig;
 import com.felipecsl.gifimageview.library.GifImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,13 +32,14 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MainActivity extends AppCompatActivity implements loginDialog.LoginDialogListener {
-    private ImageView plybtn;
+public class MainActivity extends AppCompatActivity{
     private Intent i ;
-    private GifImageView nameGif;
+    private GifImageView nameGif , nameGif2;
     private TextView versiontxt;
-    private Dialog dialog;
+    private Button btnLogin , btnGuest;
+    private EditText edtID;
     private dbManager dbMngr;
+    private ProgressBar pr;
     private FirebaseAuth.AuthStateListener authStateListener;
 
 
@@ -41,53 +49,80 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
         setContentView(R.layout.activity_main);
 
         nameGif=findViewById(R.id.gifViewName);
-        plybtn=findViewById(R.id.plyid);
+        nameGif2=findViewById(R.id.gifViewName1);
 
+        btnGuest=findViewById(R.id.btnGuest);
+        btnLogin=findViewById(R.id.btnLogIn);
+        edtID=findViewById(R.id.edtIDText);
+
+        pr=findViewById(R.id.progressBar);
+        pr.setVisibility(View.GONE);
 
         versiontxt=findViewById(R.id.txtver);
-        versiontxt.setText("version: "+BuildConfig.VERSION_NAME); // to show the version of the game
+        versiontxt.setText("version: "+ BuildConfig.VERSION_NAME); // to show the version of the game
 
         try {// to play the gif image
 
-            InputStream inputStream=getAssets().open("fly.gif");
+            InputStream inputStream=getAssets().open("stars_animation.gif");
             byte[] bytes= IOUtils.toByteArray(inputStream);
             nameGif.setBytes(bytes);
-            nameGif.startAnimation();
+            nameGif2.setBytes(bytes);
 
         }catch (IOException ex){
-            Toast.makeText(this, "Gif play erro",
+            Toast.makeText(this, "Gif play error",
                     Toast.LENGTH_SHORT).show();
         }
 
 
-        dialog = new Dialog(this);
         dbMngr=new dbManager();
         dbManager.userID=null;
 
 
-        plybtn.setOnClickListener(new View.OnClickListener() {//if the play button was clicked
-            @Override
-            public void onClick(View view) {
+        btnLogin.setEnabled(false);
 
-                openDialog();
+        edtID.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                btnLogin.setEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(edtID.getText().toString().trim().length() == 0)
+                    btnLogin.setEnabled(false);
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id=edtID.getText().toString().trim();
+                applyText(id);
+            }
+        });
+
+        btnGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i = new Intent(MainActivity.this, choosegame.class);
+                startActivity(i);
             }
         });
 
 
+
     }
 
 
-    public void openDialog(){//the login dialog
-        loginDialog loginDialog=new loginDialog();
-        loginDialog.show(getSupportFragmentManager(),"login dialog");
-    }
 
 
-    @Override
     public void applyText(String id) {//the text is brought from loginDialog.java (LoginDialogListener).
         // what I want to do with the id.
-
-
 
         final String mail=id+"@g.com";
         final String pass="123456";
@@ -97,9 +132,10 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()){
                     print("SignIn Error ");
-                    openDialog();
                 }
                 else{
+                    pr.setVisibility(View.VISIBLE);
+                    pr.setIndeterminate(true);
                     dbManager.userID=dbManager.mAuth.getCurrentUser().getUid();
                     dbManager.initDbResult();
                     FirebaseDatabase.getInstance().getReference().child("users").child(dbManager.userID).addValueEventListener(
@@ -107,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     print("welcome "+dataSnapshot.child("username").getValue().toString());
-                                    i = new Intent(MainActivity.this, Levels.class);
+                                    i = new Intent(MainActivity.this, choosegame.class);
+                                    pr.setVisibility(View.GONE);
                                     startActivity(i);
                                 }
 
@@ -126,7 +163,19 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        nameGif.stopAnimation();
+        nameGif2.stopAnimation();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        nameGif.startAnimation();
+        nameGif2.startAnimation();
+    }
 
     private void print(String s ){
         Toast.makeText(this,s, Toast.LENGTH_SHORT).show();

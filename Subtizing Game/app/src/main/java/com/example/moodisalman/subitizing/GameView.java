@@ -9,11 +9,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.View;
 
-/** This class managing to place all the items in the right places either it's in the random mode or regular mode   **/
+/** This class managing to place all the items in the right places either it's in the random mode or regular mode
+ *  **/
 
 
 public class GameView extends View  {
-    private Bitmap obj;
+    static Bitmap obj;
     private Rect rect[];
     private final int REGULAR_MODE=0,RANDOM_MODE=1;
     private Paint penInfo,penInfo1;
@@ -23,7 +24,25 @@ public class GameView extends View  {
     public GameView(Context context) {//constructor
         super(context);
 
-        obj= BitmapFactory.decodeResource(getResources(),R.drawable.fish);
+        switch (gameData.chosenGame){// according to gameData.chosenGame it chooses the obj to show
+            case 1:
+                obj= BitmapFactory.decodeResource(getResources(),R.drawable.fish);
+                break;
+            case 2:
+                obj= BitmapFactory.decodeResource(getResources(),R.drawable.star);
+                break;
+            case 3:
+                obj= BitmapFactory.decodeResource(getResources(),R.drawable.snowman);
+                break;
+            case 4:
+                obj= BitmapFactory.decodeResource(getResources(),R.drawable.leave1);
+                break;
+            case 5:
+                break;
+            case 6:
+                obj= BitmapFactory.decodeResource(getResources(),R.drawable.snowflake);
+                break;
+        }
 
         penInfo = new Paint(Paint.ANTI_ALIAS_FLAG);
         penInfo.setColor(Color.YELLOW);

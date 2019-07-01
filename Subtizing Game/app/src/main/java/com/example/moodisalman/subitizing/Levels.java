@@ -40,7 +40,7 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
 
         /**
          * dialog created to choose the mode of the game either random or regular ,
-         * activated when the user chhose a level between 1 to 3
+         * activated when the user choose a level between 1 to 3
          * **/
 
         dialog = new Dialog(this);

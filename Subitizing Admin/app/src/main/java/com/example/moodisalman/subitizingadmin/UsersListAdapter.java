@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * This class is an adapter for the users list**/
+
 
 public class UsersListAdapter extends ArrayAdapter<User> {
 

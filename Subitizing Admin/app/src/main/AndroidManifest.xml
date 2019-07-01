@@ -9,9 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AllResults"
-            android:theme="@style/AppTheme2"
-            android:label="Results list"></activity>
+        <activity android:name=".Pie_Chart"></activity>
+        <activity android:name=".LineChart" />
+        <activity
+            android:name=".AllResults"
+            android:label="Results list"
+            android:theme="@style/AppTheme2" />
         <activity
             android:name=".Chart"
             android:theme="@style/AppTheme1" />
