@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.VideoView;
 import com.felipecsl.gifimageview.library.GifImageView;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,8 +124,12 @@ public class GameScreen extends AppCompatActivity {
                 bgSound = MediaPlayer.create(this, R.raw.nightmusic);
                 break;
             case 6:
-                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.fireplace);
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.snow_forest);
                 bgSound = MediaPlayer.create(this, R.raw.fireplacemode);
+                break;
+            case 7:
+                ur = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.greeen_forest);
+                bgSound = MediaPlayer.create(this, R.raw.forestsound);
                 break;
 
         }
@@ -143,8 +149,8 @@ public class GameScreen extends AppCompatActivity {
         /** **/
 
         /**music of the game **/
-        bgSound.start();
-        bgSound.setLooping(true);
+            bgSound.start();
+            bgSound.setLooping(true);
 
         /****/
 
@@ -479,13 +485,15 @@ public class GameScreen extends AppCompatActivity {
 
             dbManager.dbResult.child(idd).setValue(result);
 
-            print("wins "+dbManager.TotalWins+" loses "+dbManager.TotalLoses);
-
             ResultsInfo resultInfo = new ResultsInfo(dbManager.TotalWins+numOfWin, dbManager.TotalLoses+numOfLose
                     ,dbManager.TotalGames+1);
-            dbManager.dbResultsInfo.setValue(resultInfo );
+            dbManager.dbResultsInfo.setValue(resultInfo ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    print("Data has been stored successfully");
+                }
+            });
 
-            print("Data has been stored successfully");
 
         }
 

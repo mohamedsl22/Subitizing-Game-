@@ -37,7 +37,7 @@ public class UserFile extends AppCompatActivity {
 
     private TextView txtName, txtID ,txtWinAvg, txtLoseAvg,txtTotalPlays;
     private Button btnChart, btnPieChart,btnLinChart;
-    private LinearLayout btnShowRes, btnDeleteUser, btnUpdateUser;
+    private LinearLayout btnShowRes, btnDeleteUser, btnUpdateUser, btnShowNotes;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private String id , userID,name;
@@ -58,6 +58,7 @@ public class UserFile extends AppCompatActivity {
         btnShowRes =findViewById(R.id.showRes);
         btnDeleteUser =findViewById(R.id.deleteUser);
         btnUpdateUser =findViewById(R.id.updateUser);
+        btnShowNotes=findViewById(R.id.showNotes);
         mAuth=FirebaseAuth.getInstance();
         txtLoseAvg=findViewById(R.id.txtAvgLose);
         txtWinAvg=findViewById(R.id.txtAvgWin);
@@ -111,6 +112,17 @@ public class UserFile extends AppCompatActivity {
             }
         });
 
+        btnShowNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(getApplicationContext(),NotesList.class);
+                i.putExtra("userID",userID);
+                i.putExtra("name",name);
+                i.putExtra("id",id);
+                startActivity(i);
+            }
+        });
+
         btnDeleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,10 +163,11 @@ public class UserFile extends AppCompatActivity {
                             DatabaseReference dUsers= FirebaseDatabase.getInstance().getReference("users").child(userID);
                             DatabaseReference dResults= FirebaseDatabase.getInstance().getReference("results").child(userID);
                             DatabaseReference dInfo= FirebaseDatabase.getInstance().getReference("info").child(userID);
-
+                            DatabaseReference dNotes=FirebaseDatabase.getInstance().getReference("notes").child(userID);
                             dUsers.removeValue();
                             dResults.removeValue();
                             dInfo.removeValue();
+                            dNotes.removeValue();
 
                             firebaseUser=mAuth.getCurrentUser();
                             firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -228,23 +241,25 @@ public class UserFile extends AppCompatActivity {
 
     }
 
-    public void getInfo(){
+    public void getInfo(){//to get the info of the player and show them after the calculations.
         DatabaseReference dInfo= FirebaseDatabase.getInstance().getReference("info").child(userID);
 
         dInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ResultsInfo res=dataSnapshot.getValue(ResultsInfo.class);
-                float win=res.getWins();
-                float lose=res.getLoses();
-                int Totalplays=res.getNumOfPlays();
+                if (dataSnapshot.getChildrenCount()>0){
+                    ResultsInfo res=dataSnapshot.getValue(ResultsInfo.class);
+                    float win=res.getWins();
+                    float lose=res.getLoses();
+                    int Totalplays=res.getNumOfPlays();
 
-                String strLose = String.format("%.2f", (lose/(lose+win))*100);
-                String strWin = String.format("%.2f", (win/(lose+win))*100);
+                    String strLose = String.format("%.2f", (lose/(lose+win))*100);
+                    String strWin = String.format("%.2f", (win/(lose+win))*100);
 
-                txtTotalPlays.setText(String.valueOf(Totalplays));
-                txtLoseAvg.setText(strLose+"%");
-                txtWinAvg.setText(strWin+"%");
+                    txtTotalPlays.setText(String.valueOf(Totalplays));
+                    txtLoseAvg.setText(strLose+"%");
+                    txtWinAvg.setText(strWin+"%");
+                }
 
             }
 

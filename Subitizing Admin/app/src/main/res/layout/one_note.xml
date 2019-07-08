@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="#ffffff">
+
+    <ImageView
+        android:id="@+id/appIconIV"
+        android:layout_width="22dp"
+        android:layout_height="60dp"
+        android:src="@drawable/red_light" />
+
+    <TextView
+        android:id="@+id/aNametxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/appIconIV"
+        android:layout_toRightOf="@+id/appIconIV"
+        android:maxLines="1"
+        android:text="Name and ID"
+        android:textColor="#00a7f5"
+        android:textSize="20sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/aVersiontxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/aNametxt"
+        android:layout_alignStart="@+id/aNametxt"
+        android:layout_alignLeft="@+id/aNametxt"
+        android:text="Note"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:textSize="16sp"
+        android:textStyle="normal|italic" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/aVersiontxt"
+        android:layout_alignStart="@+id/aVersiontxt"
+        android:layout_alignLeft="@+id/aVersiontxt"
+        android:layout_marginStart="-1dp"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginTop="3dp"
+        android:text="Date" />
+
+</RelativeLayout>

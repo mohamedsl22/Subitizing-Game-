@@ -7,8 +7,8 @@ android {
         applicationId "com.modu.moodisalman.subitizing"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 11
-        versionName "2.0"
+        versionCode 13
+        versionName "2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -25,6 +25,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation 'com.google.firebase:firebase-auth:16.0.5'

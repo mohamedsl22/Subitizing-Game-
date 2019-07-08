@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.moodisalman.subitizing.choosegame">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -125,7 +128,7 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:src="@drawable/snowman"
+                        android:src="@drawable/snowman_cp"
                         android:padding="0dp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -277,6 +280,54 @@
                 android:layout_width="160dp"
                 android:layout_height="190dp"
                 android:layout_margin="10dp"
+                android:id="@+id/btnRedRose">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/redrose"
+                        android:padding="0dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:text="Red Rose"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lightgray"
+                        android:layout_margin="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Spring time"
+                        android:padding="5dp"
+                        android:textColor="@android:color/darker_gray"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="190dp"
+                android:layout_margin="10dp"
                 android:id="@+id/btnAddPersonalImage">
 
                 <LinearLayout
@@ -311,86 +362,24 @@
 
             </android.support.v7.widget.CardView>
 
-
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_width="160dp"-->
-                <!--android:layout_height="190dp"-->
-                <!--android:layout_margin="10dp"-->
-                <!--android:id="@+id/btnsfall">-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:gravity="center">-->
-                    <!--<ImageView-->
-                        <!--android:layout_width="64dp"-->
-                        <!--android:layout_height="64dp"-->
-                        <!--android:src="@drawable/leave"-->
-                        <!--android:padding="0dp"/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:layout_marginTop="10dp"-->
-                        <!--android:text="SnowMan"/>-->
-                    <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="@color/lightgray"-->
-                        <!--android:layout_margin="10dp"/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:gravity="center"-->
-                        <!--android:text="fall time"-->
-                        <!--android:padding="5dp"-->
-                        <!--android:textColor="@android:color/darker_gray"/>-->
-                <!--</LinearLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
-
-            <!--<android.support.v7.widget.CardView-->
-            <!--android:layout_width="160dp"-->
-            <!--android:layout_height="190dp"-->
-            <!--android:id="@+id/btnFall"-->
-            <!--android:layout_margin="10dp">-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical"-->
-            <!--android:gravity="center">-->
-            <!--<ImageView-->
-            <!--android:layout_width="64dp"-->
-            <!--android:layout_height="64dp"-->
-            <!--android:src="@drawable/fallll"-->
-            <!--android:padding="0dp"/>-->
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textStyle="bold"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:text="Fall"/>-->
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="@color/lightgray"-->
-            <!--android:layout_margin="10dp"/>-->
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:text="fallll time"-->
-            <!--android:padding="5dp"-->
-            <!--android:textColor="@android:color/darker_gray"/>-->
-            <!--</LinearLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
-
         </LinearLayout>
 
+
+
     </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/white"
+        android:src="@drawable/ic_message_gray"/>
 
 
-</ScrollView>
+</RelativeLayout>

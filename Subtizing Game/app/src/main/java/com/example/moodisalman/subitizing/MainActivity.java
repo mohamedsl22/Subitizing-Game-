@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.felipecsl.gifimageview.library.BuildConfig;
 import com.felipecsl.gifimageview.library.GifImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -110,6 +109,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 i = new Intent(MainActivity.this, choosegame.class);
+                dbManager.userID=null;
                 startActivity(i);
             }
         });
@@ -175,6 +175,11 @@ public class MainActivity extends AppCompatActivity{
         super.onStart();
         nameGif.startAnimation();
         nameGif2.startAnimation();
+    }
+
+
+    private void showMessages(){
+
     }
 
     private void print(String s ){

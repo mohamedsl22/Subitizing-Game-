@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * This class used as an adapter for the results list **/
+
 public class ResultsListAdapter extends ArrayAdapter<Result> {
     private Activity context;
     private List<Result> resList;

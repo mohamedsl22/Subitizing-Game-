@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 /**
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
         crdNotes=findViewById(R.id.btnNote);
         crdSgnOut=findViewById(R.id.btnSignout);
 
+        DatabaseReference dbNote= FirebaseDatabase.getInstance().getReference("notes");
+
 
         crdAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements loginDialog.Login
         crdNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                i = new Intent(getApplicationContext(), Pie_Chart.class);
+                i = new Intent(getApplicationContext(), NotesList.class);
                 startActivity(i);
             }
         });

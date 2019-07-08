@@ -32,7 +32,7 @@ public class GameView extends View  {
                 obj= BitmapFactory.decodeResource(getResources(),R.drawable.star);
                 break;
             case 3:
-                obj= BitmapFactory.decodeResource(getResources(),R.drawable.snowman);
+                obj= BitmapFactory.decodeResource(getResources(),R.drawable.snowman_cp);
                 break;
             case 4:
                 obj= BitmapFactory.decodeResource(getResources(),R.drawable.leave1);
@@ -41,6 +41,9 @@ public class GameView extends View  {
                 break;
             case 6:
                 obj= BitmapFactory.decodeResource(getResources(),R.drawable.snowflake);
+                break;
+            case 7:
+                obj= BitmapFactory.decodeResource(getResources(),R.drawable.redrose);
                 break;
         }
 

@@ -11,7 +11,7 @@
         android:layout_margin="9dp"
         android:layout_weight="1"
         android:background="@drawable/gren"
-        android:text="גאומטרי"
+        android:text="גאומטרי \nGeometry"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -22,7 +22,7 @@
         android:layout_margin="9dp"
         android:layout_weight="1"
         android:background="@drawable/gren"
-        android:text="רנדומלי"
+        android:text="רנדומלי \nRandomly"
         android:textSize="30sp"
         android:textStyle="bold" />
 </LinearLayout>

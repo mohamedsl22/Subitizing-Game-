@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Pie_Chart"></activity>
+        <activity android:name=".NotesList"></activity>
+        <activity android:name=".AddNote" />
+        <activity android:name=".Pie_Chart" />
         <activity android:name=".LineChart" />
         <activity
             android:name=".AllResults"
