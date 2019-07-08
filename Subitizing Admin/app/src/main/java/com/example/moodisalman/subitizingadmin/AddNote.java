@@ -22,6 +22,9 @@ import java.util.Date;
 
 import es.dmoral.toasty.Toasty;
 
+/**
+This activity made for to let the admin add notes to the user.**/
+
 public class AddNote extends AppCompatActivity {
     private Button btnAdd;
     private EditText noteText;
@@ -55,7 +58,7 @@ public class AddNote extends AppCompatActivity {
 
     }
 
-    private void addNote(){
+    private void addNote(){//where it get the note and send it to database
         final String note=noteText.getText().toString();
         dbNotes= FirebaseDatabase.getInstance().getReference("notes").child(userID);
         if (!TextUtils.isEmpty(note)){
